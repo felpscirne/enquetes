@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+  output = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PollVisibility {
+  PUBLIC
+  PRIVATE
+  DRAFT
+}
+
+enum PollStatus {
+  OPEN
+  CLOSED
+}
+
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String   
+  createdAt DateTime @default(now())
+
+  createdPolls Poll[] @relation("CreatedPolls")
+  votes        Vote[]
+
+  @@map("users")
+}
+
+model Poll {
+  id            String         @id @default(uuid())
+  title         String
+  description   String?
+  visibility    PollVisibility @default(PUBLIC)
+  status        PollStatus     @default(OPEN)
+  categories    String[]   @default([])
+  
+  startAt       DateTime       @default(now())
+  endAt         DateTime?
+  expectedVotes Int?
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  createdById   String
+  createdBy     User           @relation("CreatedPolls", fields: [createdById], references: [id])
+
+  options       PollOption[]
+  votes         Vote[]
+
+  @@map("polls")
+}
+
+model PollOption {
+  id     String @id @default(uuid())
+  text   String
+  
+  pollId String
+  score   Int    @default(0)
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  
+  votes  Vote[]
+
+  @@map("poll_options")
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  pollId    String
+  poll      Poll     @relation(fields: [pollId], references: [id])
+
+  optionId  String
+  option    PollOption @relation(fields: [optionId], references: [id])
+
+  @@unique([userId, pollId])
+  @@map("votes")
+}
