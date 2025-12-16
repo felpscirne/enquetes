@@ -4,7 +4,7 @@ import { PollWithOptions } from '@/domain/repositories/poll-repository.interface
 
 interface GetPollDetailsRequest {
   pollId: string;
-  userId: string; 
+  userId?: string; 
 }
 
 
@@ -34,7 +34,7 @@ export class GetPollDetailsUseCase {
     }
 
     return {
-      poll,
+      poll, 
       userVoted,
     };
   }
