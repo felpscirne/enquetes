@@ -34,7 +34,7 @@ O projeto é estruturado em camadas claras, seguindo o padrão Clean Architectur
 
 1.  Clone o repositório:
     ```bash
-    git clone []
+    git clone [https://github.com/felpscirne/enquetes.git]
     cd enquetes
     ```
 2.  Instale as dependências:
@@ -74,34 +74,41 @@ Todos os endpoints de Enquetes e Votos são protegidos e exigem o token no cabe�
 POST  /auth/register     Cria um novo usuário.
 POST  /auth/login        Gera o accessToken JWT.
 
-### 5.💡 Endpoints Implementados (Enquetes e Votos)
-A seguir, a lista de endpoints para testar via Postman/Insomnia.
+### 💡 Endpoints Implementados (Enquetes e Votos)
 
-Método  Endpoint              Requisito   Descrição
-POST    /polls                 2.2.1      Cria uma nova enquete. (Autenticado)
-GET     /polls                 2.5        Lista enquetes com filtros e paginação.
-GET     /polls/:pollId         2.2.3      Detalhes da enquete e informa se o usuário logado já votou.
-POST    /polls/:pollId/close   2.2.2      Encerra a enquete manualmente. (Apenas criador)
-PATCH   /polls/:pollId/extend  2.2.2      Estende endAt ou expectedVotes. (Apenas criador)
+#### Enquetes (CRUD e Listagem)
 
-Votos e Resultados
+| Método | Endpoint | Requisito | Descrição |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/polls` | 2.2.1 | Cria uma nova enquete. **(Autenticado)** |
+| `GET` | `/polls` | 2.5 | Lista enquetes com filtros e paginação. |
+| `GET` | `/polls/:pollId` | 2.2.3 | Detalhes da enquete e informa se o usuário logado já votou. |
+| `POST` | `/polls/:pollId/close` | 2.2.2 | Encerra a enquete manualmente. **(Apenas criador)** |
+| `PATCH` | `/polls/:pollId/extend` | 2.2.2 | Estende `endAt` ou `expectedVotes`. **(Apenas criador)** |
 
-Método  Endpoint                Requisito     Descrição
-POST    /polls/:pollId/votes    2.3.1         Registra um voto na opção. (Implementa trava de voto único e fechamento automático por limite)
-GET     /polls/:pollId/results  2.3.2         Exibe o resultado parcial (votos e %) respeitando a visibilidade (PUBLIC/PRIVATE).
+#### Votos e Resultados
+
+| Método | Endpoint | Requisito | Descrição |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/polls/:pollId/votes` | 2.3.1 | Registra um voto na opção. **(Implementa trava de voto único e fechamento automático por limite)** |
+| `GET` | `/polls/:pollId/results` | 2.3.2 | Exibe o resultado parcial (votos e %) respeitando a visibilidade (`PUBLIC`/`PRIVATE`). |
 
 
-Histórico do Usuário (Requisito 2.4)
-Método  Endpoint	        Requisito	Descrição
-GET	    /me/polls/created	2.4	        Retorna todas as enquetes criadas pelo usuário logado.
-GET	    /me/polls/voted	    2.4	        Retorna o histórico de votos do usuário (incluindo qual opção escolheu).
+#### Histórico do Usuário (Requisito 2.4)
+
+| Método | Endpoint | Requisito | Descrição |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/me/polls/created` | 2.4 | Retorna todas as enquetes criadas pelo usuário logado. |
+| `GET` | `/me/polls/voted` | 2.4 | Retorna o histórico de votos do usuário (incluindo qual opção escolheu). |
+
 
 ### 5. ✨ Desafio Extra Implementado
 
-Desafio Extra C – Acesso por QR Code
+**Desafio Extra C – Acesso por QR Code**
 
-Método     Endpoint                   Descrição
-GET        /polls/:pollId/qrcode      Gera e retorna a imagem PNG do QR Code.
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `GET` | `/polls/:pollId/qrcode` | Gera e retorna a imagem PNG do QR Code. |
 
 Como Testar:
 
